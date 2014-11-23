@@ -2,7 +2,7 @@
 // @name        Tumblr. extend shortcut key
 // @namespace   http://www.sharkpp.net/
 // @version     0.1
-// @description Tumblr. extend shortcut key
+// @description Tumblr. extend shortcut key for blog select and reblog button
 // @author      sharkpp
 // @copyright   2014, sharkpp
 // @license     MIT License
