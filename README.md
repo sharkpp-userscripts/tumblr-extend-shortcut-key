@@ -1,8 +1,17 @@
 # Tumblr. extend shortcut key
 
-この Userscript は Tumblr. のダッシュボードで有効なショートカットキーを拡張します。
+このスクリプトは [Tumblr.](https://www.tumblr.com/)™ のダッシュボードで有効なショートカットキーを拡張します。
 
 主な機能は、ブログ選択と投稿指示の方法を変更することが出来ます。
+
+## インストール
+
+このスクリプトは [Greasy Fork](https://greasyfork.org/ja/scripts/6588-tumblr-extend-shortcut-key) のページからインストールすることが出来ます。
+
+インストールおよび実行するには下記のような拡張が必要になります。
+
+* [Tampermonkey - Chrome ウェブストア](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ja)
+* [Greasemonkey :: Add-ons for Firefox](https://addons.mozilla.org/ja/firefox/addon/greasemonkey/) ※動作未確認
 
 ## ショートカットキーの一覧
 
