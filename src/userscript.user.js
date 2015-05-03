@@ -25,17 +25,6 @@
     var isActionSelectMenuVisibled = function() {
         return 0 < jQuery('[data-js-publish]').length;
     };
-    var popupPostForm = function() {
-        var k = Tumblr.KeyCommands, i;
-        k.update_post_positions();
-        k.current_position = (window.pageYOffset || (document.documentElement && document.documentElement.scrollTop) ||
-                              document.body.scrollTop) + k.scroll_offset;
-        for (i in k.post_positions) {
-            if (k.check_offset(k.post_positions[i])) {
-                jQuery('[data-pageable="' + i + '"] [data-subview="reblog"]').click();
-            }
-        }
-    };
     var selectBlog = function(n) {
         var menuVisibled = isBlogSelectMenuVisibled();
         if (!menuVisibled)
@@ -72,7 +61,6 @@
                 }
                 return true;
 //          } else if (82 == e.keyCode) { // 'r'
-//                popupPostForm();
 //                console.log('************');
 //                return false;
             }
