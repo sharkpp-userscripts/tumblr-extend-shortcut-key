@@ -13,7 +13,13 @@
 * [Tampermonkey - Chrome ウェブストア](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=ja)
 * [Greasemonkey :: Add-ons for Firefox](https://addons.mozilla.org/ja/firefox/addon/greasemonkey/) ※動作未確認
 
+## アンインストール
+
+それぞれの拡張のヘルプを参照してください。
+
 ## ショートカットキーの一覧
+
+### 投稿フォームで有効なショートカットキー
 
 <table>
   <tr>
@@ -36,23 +42,27 @@
     <td><tt>alt + D</tt></td>
     <td>下書きに追加</td>
   </tr>
+  <tr>
+    <td><tt>alt + P</tt></td>
+    <td>非公開で投稿</td>
+  </tr>
 </table>
 
 ## 機能の詳細
 
 ### ブログの選択
 
-ブログが複数有る場合に `alt + [数字キー]` で、`[数字キー]` で指定したブログに切り替えることができます。
+ブログが複数有る場合は `alt + [数字キー]` で、`[数字キー]` で指定したブログに切り替えることができます。
 
-ブログが数字キーのどれに割り当てられているか？は、リストを表示することでショートカットキーが末尾に表示されるのため確認することが出来ます。
+数字キーとブログの対応付けについては、投稿フォームのブログ一覧に表示されているので、一覧を表示することで確認することが出来ます。
 
 ![ブログの選択](https://raw.githubusercontent.com/sharkpp-userscripts/tumblr-extend-shortcut-key/master/img/blog-select.png)
 
 ## 投稿指示
 
-投稿指示は、「今すぐ投稿」と「予約投稿に追加」と「下書きに追加」に、それぞれショートカットキーが新たに割り当てられています。
+投稿指示は、「今すぐ投稿」と「予約投稿に追加」「下書きに追加」と「非公開で投稿」に、それぞれショートカットキーが割り当てられています。
 
-ブログの選択と同じように、リストを表示することでショートカットキーの確認が出来ます。
+ブログの選択と同じように、一覧を表示することでショートカットキーの確認が出来ます。
 
 ![リブログボタン](https://raw.githubusercontent.com/sharkpp-userscripts/tumblr-extend-shortcut-key/master/img/reblog-button.png)
 
@@ -60,7 +70,7 @@
 
 The MIT License (MIT)
 
-Copyright (c) 2014 sharkpp.
+Copyright (c) 2014-2015 sharkpp.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
