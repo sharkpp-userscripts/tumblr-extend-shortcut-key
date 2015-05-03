@@ -12,33 +12,43 @@
 // @include     https://www.tumblr.com/tagged/*
 // @include     https://www.tumblr.com/search/*
 // ==/UserScript==
-(function ()
-{
-    var getPostForm = function() {
-        var postForm = jQuery('[data-subview="postForm"]');
-        return 0 < postForm.length && 0 < postForm[0].childNodes.length
-               ? postForm[0] : null;
+(function () {
+    var evaluate = function(xpath, resultOnce) {
+        resultOnce = undefined == typeof resultOnce ? false : resultOnce;
+        var items = document.evaluate(xpath, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+        if (resultOnce)
+            return items.snapshotLength ? items.snapshotItem(0) : null;
+        var results = [];
+        for (var i = 0; i < items.snapshotLength; i++)
+            results[results.length] = items.snapshotItem(i);
+        return results;
     };
-    var isBlogSelectMenuVisibled = function() {
-        return 0 < jQuery('[data-js-tumblelogchoice]').length;
+    var clickByXPath = function(xpath) {
+        var elm = evaluate(xpath, true);
+        if (elm)
+            elm.click();
     };
-    var isActionSelectMenuVisibled = function() {
-        return 0 < jQuery('[data-js-publish]').length;
+
+    var getBlogSelectMenuItem = function() {
+        return evaluate('//*[@data-js-tumblelogchoice]', false);
+    };
+    var getActionSelectMenuItem = function() {
+        return evaluate('//*[@data-js-publish or @data-js-queue or @data-js-draft or @data-js-private]', false);
     };
     var selectBlog = function(n) {
-        var menuVisibled = isBlogSelectMenuVisibled();
+        var menuVisibled = 0 < getBlogSelectMenuItem().length;
         if (!menuVisibled)
-            jQuery('[data-js-clickabletumbleloglabel]')[0].click();
-        jQuery('[data-js-tumblelogchoice]:eq(' + n + ')').click();
+            clickByXPath('//*[@data-js-clickabletumbleloglabel]');
+        clickByXPath('//*[@data-js-tumblelogchoice][' + (n + 1) + ']');
         if (menuVisibled)
-            jQuery('[data-js-clickabletumbleloglabel]')[0].click();
+            clickByXPath('//*[@data-js-clickabletumbleloglabel]');
     };
     var actionSelect = function(act){
-        var menuVisibled = isActionSelectMenuVisibled();
+        var menuVisibled = 0 < getActionSelectMenuItem().length;
         if (!menuVisibled)
-            jQuery('[data-js-clickablesavedropdown]')[0].click();
-        jQuery('[data-js-' + act + ']').click();
-        jQuery('[data-js-clickablesave]')[0].click();
+            clickByXPath('//*[@data-js-clickablesavedropdown]');
+        clickByXPath('//*[@data-js-' + act + ']');
+        clickByXPath('//*[@data-js-clickablesave]');
     };
     var onshortcutkey = function (e) {
             if (e.altKey) {
@@ -92,44 +102,50 @@
             }
         };
     var mo = new MutationObserver(function(mr){
-        if (isBlogSelectMenuVisibled() &&
-            !jQuery('[data-js-tumblelogchoice]').attr('_6588-attr2'))
+        // append shortcut key for blog select menu when create menu
+        var items1 = getBlogSelectMenuItem();
+        if (items1.length &&
+            !items1[0].getAttribute('_6588-flag1'))
         {
-            jQuery('[data-js-tumblelogchoice]')
-                .attr('_6588-attr2', '1')
-                .each(function(i){
-                    var div = document.createElement('div');
-                        div.style.cssText = ['margin-right:5px',
-                                             'text-align:right',
-                                             'height:100%',
-                                             'line-height:25px',
-                                             'position:absolute',
-                                             'right:0',
-                                             'top:5px'].join(';');
-                    addShortcutKeyElements(div, ["alt", (i + 1).toString()]);
-                    jQuery(this).children('div').append(div);
-                });
+            items1[0].setAttribute('_6588-flag1', '1');
+            // append shortcut key
+            for (var i = 0, item; item = items1[i]; i++)
+            {
+                var div = document.createElement('div');
+                    div.style.cssText = ['margin-right:5px',
+                                         'text-align:right',
+                                         'height:100%',
+                                         'line-height:25px',
+                                         'position:absolute',
+                                         'right:0',
+                                         'top:5px'].join(';');
+                addShortcutKeyElements(div, ["alt", (i + 1).toString()]);
+                item.lastChild.appendChild(div);
+            }
         }
-        if (isActionSelectMenuVisibled() &&
-            !jQuery('[data-js-publish]').attr('_6588-attr3'))
+        // append shortcut key for reblog action menu when create menu
+        var items2 = getActionSelectMenuItem();
+        if (items2.length &&
+            !items2[0].getAttribute('_6588-flag2'))
         {
-            jQuery('[data-js-publish],[data-js-queue],[data-js-draft],[data-js-private]')
-                .attr('_6588-attr3', '1')
-                .each(function(i){
-                    var div2 = document.createElement('div');
-                        div2.style.cssText = ['text-align: right',
-                                              'height: 100%',
-                                              'line-height: 25px',
-                                              'position: absolute',
-                                              'top: 0px',
-                                              'right: 10px'].join(';');
-                    addShortcutKeyElements(div2, ["alt", ['R', 'E', 'D', 'P'][i]]);
-                    var div = document.createElement('div');
-                        div.style.cssText = ['width: 200px'].join(';');
-                        div.appendChild(div2);
-                    jQuery(this).append(div2)
-                        .parent().parent().css('width', '230px');
-                });
+            items2[0].setAttribute('_6588-flag2', '1');
+            // append shortcut key
+            for (var i = 0, item; item = items2[i]; i++)
+            {
+                var div2 = document.createElement('div');
+                    div2.style.cssText = ['text-align: right',
+                                          'height: 100%',
+                                          'line-height: 25px',
+                                          'position: absolute',
+                                          'top: 0px',
+                                          'right: 10px'].join(';');
+                addShortcutKeyElements(div2, ["alt", ['R', 'E', 'D', 'P'][i]]);
+                var div = document.createElement('div');
+                    div.style.cssText = ['width: 200px'].join(';');
+                    div.appendChild(div2);
+                item.appendChild(div2);
+                item.parentNode.parentNode.style.cssText = 'width:230px';
+            }
         }
     });
     mo.observe(document.body, {childList: true, subtree:true});
