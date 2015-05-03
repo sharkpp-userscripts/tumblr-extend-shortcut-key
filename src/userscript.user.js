@@ -70,9 +70,6 @@
                     return false;
                 }
                 return true;
-//          } else if (82 == e.keyCode) { // 'r'
-//                console.log('************');
-//                return false;
             }
         };
     var onkeydown = function (e) {//console.log(e);
