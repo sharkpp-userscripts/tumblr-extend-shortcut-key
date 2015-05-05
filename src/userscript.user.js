@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Tumblr. extend shortcut key
 // @namespace   http://www.sharkpp.net/
-// @version     0.2
+// @version     0.3
 // @description Tumblr. extend shortcut key for blog select and reblog button
 // @author      sharkpp
 // @copyright   2014-2015, sharkpp
@@ -50,38 +50,26 @@
         clickByXPath('//*[@data-js-' + act + ']');
         clickByXPath('//*[@data-js-clickablesave]');
     };
-    var onshortcutkey = function (e) {
-            if (e.altKey) {
-                if (49 <= e.keyCode && e.keyCode <= 57) { // Alt + '1' ... Alt + '9'
-                    var n = (e.keyCode - 0x30) - 1;
-                    selectBlog(n);
-                    return false;
-                } else if (82 == e.keyCode) { // Alt + 'r'
-                    actionSelect('publish');
-                    return false;
-                } else if (69 == e.keyCode) { // Alt + 'e'
-                    actionSelect('queue');
-                    return false;
-                } else if (68 == e.keyCode) { // Alt + 'd'
-                    actionSelect('draft');
-                    return false;
-                } else if (80 == e.keyCode) { // Alt + 'p'
-                    actionSelect('private');
-                    return false;
-                }
-                return true;
-            }
-        };
-    var onkeydown = function (e) {//console.log(e);
+    var onshortcutkey = function (e) {//console.log(e);
             e = e || window.event; // for IE
             if (e.altKey) {
                 if (0xE5 == e.keyCode) {
-                    return false;
+                } else if (49 <= e.keyCode && e.keyCode <= 57) { // Alt + '1' ... Alt + '9'
+                    var n = (e.keyCode - 0x30) - 1;
+                    selectBlog(n);
+                } else if (82 == e.keyCode) { // Alt + 'r'
+                    actionSelect('publish');
+                } else if (69 == e.keyCode) { // Alt + 'e'
+                    actionSelect('queue');
+                } else if (68 == e.keyCode) { // Alt + 'd'
+                    actionSelect('draft');
+                } else if (80 == e.keyCode) { // Alt + 'p'
+                    actionSelect('private');
                 } else {
-                    return onshortcutkey(e);
+                    return;
                 }
-            } else {
-                return onshortcutkey(e);
+                e.preventDefault();
+                e.stopPropagation();
             }
         };
     var addShortcutKeyElements = function (elm, keys) {
@@ -146,5 +134,5 @@
         }
     });
     mo.observe(document.body, {childList: true, subtree:true});
-    document.onkeydown = onkeydown;
+    document.addEventListener('keydown', onshortcutkey, true);
 })();
