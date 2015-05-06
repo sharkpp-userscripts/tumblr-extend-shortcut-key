@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Tumblr. extend shortcut key
 // @namespace   http://www.sharkpp.net/
-// @version     0.3
+// @version     0.4
 // @description Tumblr. extend shortcut key for blog select and reblog button
 // @author      sharkpp
 // @copyright   2014-2015, sharkpp
@@ -25,8 +25,10 @@
     };
     var clickByXPath = function(xpath) {
         var elm = evaluate(xpath, true);
-        if (elm)
-            elm.click();
+        if (!elm)
+            return false;
+        elm.click();
+        return true;
     };
 
     var getBlogSelectMenuItem = function() {
@@ -39,16 +41,17 @@
         var menuVisibled = 0 < getBlogSelectMenuItem().length;
         if (!menuVisibled)
             clickByXPath('//*[@data-js-clickabletumbleloglabel]');
-        clickByXPath('//*[@data-js-tumblelogchoice][' + (n + 1) + ']');
+        var result = clickByXPath('//*[@data-js-tumblelogchoice][' + (n + 1) + ']');
         if (menuVisibled)
             clickByXPath('//*[@data-js-clickabletumbleloglabel]');
+        return result;
     };
     var actionSelect = function(act){
         var menuVisibled = 0 < getActionSelectMenuItem().length;
         if (!menuVisibled)
             clickByXPath('//*[@data-js-clickablesavedropdown]');
         clickByXPath('//*[@data-js-' + act + ']');
-        clickByXPath('//*[@data-js-clickablesave]');
+        return clickByXPath('//*[@data-js-clickablesave]');
     };
     var onshortcutkey = function (e) {//console.log(e);
             e = e || window.event; // for IE
@@ -56,15 +59,20 @@
                 if (0xE5 == e.keyCode) {
                 } else if (49 <= e.keyCode && e.keyCode <= 57) { // Alt + '1' ... Alt + '9'
                     var n = (e.keyCode - 0x30) - 1;
-                    selectBlog(n);
+                    if (!selectBlog(n))
+                        return;
                 } else if (82 == e.keyCode) { // Alt + 'r'
-                    actionSelect('publish');
+                    if (!actionSelect('publish'))
+                        return;
                 } else if (69 == e.keyCode) { // Alt + 'e'
-                    actionSelect('queue');
+                    if (!actionSelect('queue'))
+                        return;
                 } else if (68 == e.keyCode) { // Alt + 'd'
-                    actionSelect('draft');
+                    if (!actionSelect('draft'))
+                        return;
                 } else if (80 == e.keyCode) { // Alt + 'p'
-                    actionSelect('private');
+                    if (!actionSelect('private'))
+                        return;
                 } else {
                     return;
                 }
